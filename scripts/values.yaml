@@ -1,4 +1,0 @@
-numberOfGpus: 1
-apiMemoryRequest: 8Gi
-workspacePath: /tmp/gensynth/workspaces-storage
-nodeName: master-node
