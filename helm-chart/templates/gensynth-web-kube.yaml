@@ -27,8 +27,11 @@ spec:
       app: gensynth-web
   template:
     metadata:
+      annotations:
+        dont-send-job-metrics: "true"       
       labels:
         app: gensynth-web
+        project: gensynth
     spec:
       nodeSelector:
         "beta.kubernetes.io/os": linux
@@ -45,6 +48,7 @@ spec:
         - mountPath: "/usr/share/nginx/html/assets/app-config.json"
           name: web-config
           subPath: app-config.json
+      schedulerName: runai-scheduler
       imagePullSecrets:
       - name: regcred
       volumes:

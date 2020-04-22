@@ -43,7 +43,10 @@ spec:
       app: gensynth-postgres
   template:
     metadata:
+      annotations:
+        dont-send-job-metrics: "true"
       labels:
+        project: gensynth
         app: gensynth-postgres
     spec:
       containers:
@@ -62,6 +65,7 @@ spec:
         envFrom:
           - configMapRef:
               name: postgres-config
+      schedulerName: runai-scheduler
       imagePullSecrets:
       - name: regcred
       volumes:

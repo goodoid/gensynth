@@ -96,6 +96,10 @@ spec:
     metadata:
       labels:
         app: gensynth-api
+        project: gensynth
+      annotations:
+        job-name-in-metrics: gensynth
+        job-type-in-metrics: gensynth
     spec:
       nodeSelector:
         "beta.kubernetes.io/os": linux
@@ -140,6 +144,7 @@ spec:
           name: data
       imagePullSecrets:
       - name: regcred
+      schedulerName: runai-scheduler
       volumes:
         - name: api-config
           configMap:
