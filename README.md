@@ -8,9 +8,10 @@ installation instructions:
 5. cd scripts
 6. create-gensynth-ns.sh
 7. set-gensynth-ns-context.sh
-8. create values.yaml file in same formart as values-example.yaml and update desired values
+8. create values.yaml file in same format as values-example.yaml and update desired values
 9. helm-upgrade.sh
-10. install-packages.sh
+10. wait until all pods are running
+11. install-packages.sh
 
 test application works:
 1. browse to http://gensynth
@@ -26,6 +27,6 @@ running another instance of the application:
 192.168.1.240 gensynth-api2
 192.168.1.240 gensynth2
 2. set-job-index-2.sh
-3. do steps 5-10 in installation instructions
+3. do steps 5-11 in installation instructions
 4. browse to http://gensynth2
 5. to get back to first instance of the application: set-job-index-null.sh
