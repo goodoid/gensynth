@@ -1,0 +1,9 @@
+name: gensynth
+version: 0.0.1
+description: A Helm chart for gensynth
+apiVersion: v1
+appVersion: "1.0"
+
+
+
+

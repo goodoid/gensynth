@@ -1,0 +1,82 @@
+# apiVersion: storage.k8s.io/v1
+# kind: StorageClass
+# metadata:
+#   name: pgdb
+# provisioner: kubernetes.io/azure-disk
+# parameters:
+#   skuName: Standard_LRS
+#   kind: Managed
+#   cachingmode: None
+# ---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pgdb
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  labels:
+    app: gensynth-postgres
+data:
+  POSTGRES_DB: gensynth_platform
+  POSTGRES_USER: gensynth
+  POSTGRES_PASSWORD: gensynth_P@ssw0rd
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gensynth-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gensynth-postgres
+  template:
+    metadata:
+      labels:
+        app: gensynth-postgres
+    spec:
+      containers:
+      - name: gensynth-db
+        image: darwinai/gensynth-db:1.8.0-pg
+        resources:
+          requests:
+            memory: 1Gi
+        ports:
+        - containerPort: 5432
+          name: pg
+        volumeMounts:
+        - mountPath: /var/lib/postgresql
+          subPath: data
+          name: data
+        envFrom:
+          - configMapRef:
+              name: postgres-config
+      imagePullSecrets:
+      - name: regcred
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: pgdb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gensynth-db
+spec:
+  type: ClusterIP
+  ports:
+  - port: 5432
+    targetPort: 5432
+  selector:
+    app: gensynth-postgres

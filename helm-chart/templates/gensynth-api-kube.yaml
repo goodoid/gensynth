@@ -1,0 +1,164 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: gensynth-workspace-persistent-volume{{ .Values.jobIndex }}
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  local:
+    path: {{ required "workspacePath is required" .Values.workspacePath }}/workspace-storage{{ .Values.jobIndex }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - {{ required "nodeName is required" .Values.nodeName }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gensynth-workspace
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ""
+  #storageClassName: local-path
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-config
+data:
+  app.config.json: |+
+    {
+      "auth": {
+        "isEnabled": true,
+        "useCustomAuth": true,
+        "clientId": "gensynth-ui",
+        "issuer": "myhost.example.com",
+        "sessionSecret": "f4588a53-47fa-4d9d-9ce9-756fba0bacfc",
+        "customTokenSecret": "h56wvuz-xbnm c4tqqqdfg3y1jklr2eiopas",
+        "customTokenExpirySeconds": 28800
+      },
+      "resources": {
+        "GPUs": {
+          "gensynth": {{ .Values.numberOfGpus }}
+        },
+        "enableGPUs": true
+      }
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: engine-config
+data:
+  config.yaml: |+
+    application:
+      display_interval: 5
+      stats_interval: 250
+      output_dir: "/gensynth/workspace/models"
+      accuracy_drop_over_thresh: 0.05
+      validation_per_epoch: 1
+      database_type: pg
+      database: "Driver={PostgreSQL Unicode};Servername=gensynth-db;Database=gensynth_platform;uid=gensynth;pwd=gensynth_P@ssw0rd"
+
+    license:
+      key: FCA232-AA3DE3-4BE0AE-858496-0CFDBA-C2B8ED
+
+    mailer:
+      enabled: False
+      from_address: darwinai.mailer@gmail.com
+      to_address: user@example.com
+      subject: GenSynth Cycle Notification
+      body_path: /etc/gensynth/mail_template.html
+      server: smtp.gmail.com
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gensynth-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gensynth-api
+  template:
+    metadata:
+      labels:
+        app: gensynth-api
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      hostname: gensynth
+      containers:
+      - name: gensynth-api
+        image: darwinai/gensynth:api_1.8.0-gpu
+        resources:
+          requests:
+            memory: {{ .Values.apiMemoryRequest }}
+          limits:
+            nvidia.com/gpu: {{ .Values.numberOfGpus }}
+        env:
+        - name: DB_POLL_CHRON
+          value: "*/15 * * * * *"
+        - name: JOB_POLL_CHRON
+          value: "*/15 * * * * *"
+        - name: CONFIG_FOLDER
+          value: "/gensynth/workspace/configs"
+        - name: GENSYNTH_WORKSPACE_PATH
+          value: "/gensynth/workspace"
+        - name: API_LOGFILE
+          value: "/gensynth/workspace/log/gensynth_api.log"
+        ports:
+        - containerPort: 3000
+          name: http
+        volumeMounts:
+        - mountPath: /usr/gensynthapi/app.config.json
+          name: api-config
+          subPath: app.config.json
+        - mountPath: /etc/gensynth/config.yaml
+          name: engine-config
+          subPath: config.yaml
+        - mountPath: /gensynth/workspace
+          subPath: workspace
+          name: data
+        - mountPath: /gensynth/packages
+          subPath: packages
+          name: data
+        - mountPath: /root/.local/share/data/bconf
+          subPath: bconf
+          name: data
+      imagePullSecrets:
+      - name: regcred
+      volumes:
+        - name: api-config
+          configMap:
+            name: api-config
+        - name: engine-config
+          configMap:
+            name: engine-config
+        - name: data
+          persistentVolumeClaim:
+            claimName: gensynth-workspace
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gensynth-api
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 3000
+    targetPort: 3000
+  selector:
+    app: gensynth-api

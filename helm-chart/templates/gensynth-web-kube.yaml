@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-config
+data:
+  app-config.json: |+
+    {
+      "apiHostname": "http://gensynth-api{{ .Values.jobIndex }}",
+      "useAuthentication": true,
+      "authProvisionerConfig": {
+        "customAuth": true,
+        "loginUrl": "/login",
+        "issuer": "",
+        "clientId": "",
+        "tokenType": ""
+      }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gensynth-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gensynth-web
+  template:
+    metadata:
+      labels:
+        app: gensynth-web
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: gensynth-web
+        image: darwinai/gensynth-web:1.8.0
+        resources:
+          requests:
+            memory: 512Mi
+        ports:
+        - containerPort: 80
+          name: http
+        volumeMounts:
+        - mountPath: "/usr/share/nginx/html/assets/app-config.json"
+          name: web-config
+          subPath: app-config.json
+      imagePullSecrets:
+      - name: regcred
+      volumes:
+        - name: web-config
+          configMap:
+            name: web-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gensynth-web
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: gensynth-web
