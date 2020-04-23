@@ -73,7 +73,7 @@ data:
       database: "Driver={PostgreSQL Unicode};Servername=gensynth-db;Database=gensynth_platform;uid=gensynth;pwd=gensynth_P@ssw0rd"
 
     license:
-      key: FCA232-AA3DE3-4BE0AE-858496-0CFDBA-C2B8ED
+      key: {{ required "license is required" .Values.license }}
 
     mailer:
       enabled: False

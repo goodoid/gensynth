@@ -2,4 +2,5 @@ numberOfGpus: 1
 apiMemoryRequest: 32Gi
 workspacePath: null
 nodeName: null
+license: null
 jobIndex: null
