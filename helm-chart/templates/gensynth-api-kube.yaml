@@ -105,7 +105,7 @@ spec:
       hostname: gensynth
       containers:
       - name: gensynth-api
-        image: darwinai/gensynth:api_1.8.0-gpu
+        image: gcr.io/run-ai-prod/gensynth:api_1.8.0-gpu
         resources:
           requests:
             memory: {{ .Values.apiMemoryRequest }}

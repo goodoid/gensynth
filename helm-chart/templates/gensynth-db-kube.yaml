@@ -51,7 +51,7 @@ spec:
     spec:
       containers:
       - name: gensynth-db
-        image: darwinai/gensynth-db:1.8.0-pg
+        image: gcr.io/run-ai-prod/gensynth-db:1.8.0-pg
         resources:
           requests:
             memory: 1Gi
