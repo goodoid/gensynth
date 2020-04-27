@@ -21,6 +21,9 @@ _**Installation Instructions:**_
 9. Add the DNS records to your DNS. Run `kubectl get service` - the external of GenSynth Application should be added to the DNS.
 10. Set the context to default with the script: `set-default-ns-context.sh`
 
+
+
+
 **test application works:**
 1. Browse to http://gensynth
 2. Enter username: administrator, password: Password123
