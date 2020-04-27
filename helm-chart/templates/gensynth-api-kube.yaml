@@ -99,7 +99,6 @@ spec:
         project: gensynth
       annotations:
         job-name-in-metrics: gensynth
-        job-type-in-metrics: gensynth
     spec:
       nodeSelector:
         "beta.kubernetes.io/os": linux
