@@ -67,7 +67,7 @@ spec:
               name: postgres-config
       schedulerName: runai-scheduler
       imagePullSecrets:
-      - name: regcred
+      - name: gcr-secret
       volumes:
         - name: data
           persistentVolumeClaim:

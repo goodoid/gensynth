@@ -142,7 +142,7 @@ spec:
           subPath: bconf
           name: data
       imagePullSecrets:
-      - name: regcred
+      - name: gcr-secret
       schedulerName: runai-scheduler
       volumes:
         - name: api-config

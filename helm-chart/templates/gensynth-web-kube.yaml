@@ -50,7 +50,7 @@ spec:
           subPath: app-config.json
       schedulerName: runai-scheduler
       imagePullSecrets:
-      - name: regcred
+      - name: gcr-secret
       volumes:
         - name: web-config
           configMap:
