@@ -3,7 +3,13 @@
 _**Installation Instructions:**_
 1. Clone this repository.
 2. Create a directory for the storage on the node, the directory should have an internal directory called "workspace-storage" with all permissions - this directory will be used by the API image. `mkdir –m777 {path}/workspace-storage`
-3. Access to Docker images for the deployments:
+3. Run the following scripts from the scripts directory:
+    
+    a. `create-gensynth-ns.sh`
+    
+    b. `set-gensynth-ns-context.sh`
+    
+4. Access to Docker images for the deployments:
     
     _Option 1:_ Give the deployments access to Darwin docker repository:_ 
     
@@ -14,22 +20,14 @@ _**Installation Instructions:**_
     _Option 2: Use runai private repository:_ 
     
     a. Run the script: `create-runai-secret.sh`.
-       
     
-4. Set the values file in the helm-charts with the relevant configuration.
-5. Create a Project in Run:Ai with name of `gensynth` with the number of GPUs that will be used by the application.
-6. Run the following scripts from the scripts directory:
-    
-    a. `create-gensynth-ns.sh`
-    
-    b. `set-gensynth-ns-context.sh`
-    
-    c. `helm-upgrade.sh`
-    
-7. Verify all pods are allocated and running.
-8. Go to the GenSynth's parent directory of the package directory, copy the script `gs-install-packages.sh` to this directory and run the script - this will load and install all the packages to the API pod.  
-9. Add the DNS records to your DNS. Run `kubectl get service` - the external of GenSynth Application should be added to the DNS.
-10. Set the context to default with the script: `set-default-ns-context.sh`
+5. Set the values file in the helm-charts with the relevant configuration.
+6. Create a Project in Run:Ai with name of `gensynth` with the number of GPUs that will be used by the application.
+7. Run the helm install script to deploy the application: `helm-upgrade.sh`
+8. Verify all pods are allocated and running.
+9. Go to the GenSynth's parent directory of the package directory, copy the script `gs-install-packages.sh` to this directory and run the script - this will load and install all the packages to the API pod.  
+10. Add the DNS records to your DNS. Run `kubectl get service` - the external of GenSynth Application should be added to the DNS.
+11. Set the context to default with the script: `set-default-ns-context.sh`
 
     <br/>
     <br/>
@@ -52,6 +50,6 @@ _**Installation Instructions:**_
 192.168.1.240 gensynth-api2
 192.168.1.240 gensynth2
 2. `set-job-index-2.sh`
-3. do steps 2-9 in installation instructions
+3. do steps 2-11 in installation instructions
 4. browse to http://gensynth2
 5. to get back to first instance of the application: `set-job-index-null.sh`
