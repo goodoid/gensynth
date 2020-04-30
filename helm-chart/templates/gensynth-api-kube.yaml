@@ -160,7 +160,7 @@ kind: Service
 metadata:
   name: gensynth-api
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
   - port: 3000
     targetPort: 3000
