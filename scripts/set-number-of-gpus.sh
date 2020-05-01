@@ -4,7 +4,7 @@ gpus=$1
 if [[ -n "$gpus" ]]; then
     set -x
     # Change the path here 1    
-    helm upgrade -i gensynth  {path_to_gensynth_repo}/helm-chart/  --set jobIndex=${GENSYNTH_JOB_INDEX},numberOfGpus=$gpus
+    helm upgrade -i gensynth -n gensynth {path_to_gensynth_repo}/helm-chart/  --set jobIndex=${GENSYNTH_JOB_INDEX},numberOfGpus=$gpus
     kubectl delete replicaset -l app=gensynth-api -n gensynth
 
     set +x
