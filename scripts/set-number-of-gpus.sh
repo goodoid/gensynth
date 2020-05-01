@@ -21,7 +21,9 @@ if [[ -n "$gpus" ]]; then
 
     set -x
     # Change the path here 2
+    kubectl config set-context --current --namespace=gensynth
     {path_to_gensynth_packages_directory}/gs-install-packages.sh
+    kubectl config set-context --current --namespace=default	    
 
 
 else
