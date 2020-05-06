@@ -12,8 +12,8 @@ metadata:
       }
       add_header 'Access-Control-Allow-Origin' "$allow_origin";
       add_header 'Access-Control-Allow-Credentials' 'true';
-      add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
-      add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+      add_header 'Access-Control-Allow-Methods' 'GET, PUT, POST, DELETE, PATCH, OPTIONS';
+      add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization';
 spec:
   rules:
   - host: gensynthfb-api{{ .Values.jobIndex }}
