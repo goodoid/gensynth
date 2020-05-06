@@ -7,7 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/rewrite-target: /$1
     ingress.kubernetes.io/configuration-snippet: |
-      if ($http_origin ~ '^http:\/\/gensynthfb(-api)?(\.honeywell\.com)?.*') {
+      if ($http_origin ~ '^http:\/\/gensynthfb(-api)?(\.honeywell\.com)?') {
         set $allow_origin $http_origin;
       }
       add_header 'Access-Control-Allow-Origin' "$allow_origin";
