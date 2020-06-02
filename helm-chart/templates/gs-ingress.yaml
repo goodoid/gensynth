@@ -7,7 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/rewrite-target: /$1
     ingress.kubernetes.io/configuration-snippet: |
-      if ($http_origin ~ '^http:\/\/gensynthfb(\.honeywell\.com)?') {
+      if ($http_origin ~ '^http:\/\/gensynthin(\.honeywell\.com)?') {
         set $allow_origin $http_origin;
       }
       add_header 'Access-Control-Allow-Origin' "$allow_origin";
@@ -16,7 +16,7 @@ metadata:
       add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization';
 spec:
   rules:
-  - host: gensynthfb-api{{ .Values.jobIndex }}
+  - host: gensynthin-api{{ .Values.jobIndex }}
     http:
       paths:
       - backend:
@@ -34,14 +34,14 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   rules:
-  - host: gensynthfb{{ .Values.jobIndex }}
+  - host: gensynthin{{ .Values.jobIndex }}
     http:
       paths:
       - backend:
           serviceName: gensynth-web
           servicePort: 80
         path: /(.*)
-  - host: gensynthfb{{ .Values.jobIndex }}.honeywell.com
+  - host: gensynthin{{ .Values.jobIndex }}.honeywell.com
     http:
       paths:
         - backend:

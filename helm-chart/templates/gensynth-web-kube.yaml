@@ -5,7 +5,7 @@ metadata:
 data:
   app-config.json: |+
     {
-      "apiHostname": "http://gensynthfb-api{{ .Values.jobIndex }}",
+      "apiHostname": "http://gensynthin-api{{ .Values.jobIndex }}",
       "useAuthentication": true,
       "authProvisionerConfig": {
         "customAuth": true,
