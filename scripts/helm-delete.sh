@@ -1,3 +1,3 @@
 #!/bin/sh
 set -x
-helm delete gensynth
+helm delete gensynth $@

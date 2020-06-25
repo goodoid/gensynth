@@ -1,5 +1,6 @@
 numberOfGpus: 1
 apiMemoryRequest: 8Gi
 workspacePath: /tmp/gensynth/workspaces-storage
+hostname: gensynthin
 nodeName: master-node
 license: FCA232-AA3DE3-4BE0AE-858496-0CFDBA-C2B8ED

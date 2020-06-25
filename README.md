@@ -23,8 +23,10 @@ _**Installation Instructions:**_
 6. Set the values file in the helm-charts with the relevant configuration.
 7. Run the helm install script to deploy the application: `helm-upgrade.sh`
 8. Verify all pods are allocated and running.
-9. Go to the GenSynth's root Github directory, and run `packages/gs-install-packages.sh` - this will load and install all the packages to the API pod.  
-10. Add the DNS records to your DNS. Run `kubectl get service` - the external of GenSynth Application should be added to the DNS.
+9. Download packages folder
+10. Replace gs-install-packages.sh file: cp packages-override/gs-install-packages.sh packages
+11. Run `install-packages.sh`
+12. Add the DNS records to your DNS. Run `kubectl get service` - the external of GenSynth Application should be added to the DNS.
 
     <br/>
     <br/>
