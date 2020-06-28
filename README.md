@@ -21,12 +21,29 @@ _**Installation Instructions:**_
     a. Run the script: `create-runai-secret.sh`.
     
 6. Set the values file in the helm-charts with the relevant configuration.
-7. Run the helm install script to deploy the application: `helm-upgrade.sh`
-8. Verify all pods are allocated and running.
-9. Download packages folder
-10. Replace gs-install-packages.sh file: cp packages-override/gs-install-packages.sh packages
-11. Run `install-packages.sh`
-12. Add the DNS records to your DNS. Run `kubectl get service` - the external of GenSynth Application should be added to the DNS.
+7. If want to configure other load balancer port than the default 80, need to do the following (for example port 81):
+
+   a. `kubectl edit runaiconfig -n runai`
+
+   b. Add the following configuration under `spec:`
+    ```
+      nginx-ingress:
+        controller:
+          service:
+            ports:
+              http: 81
+    ```
+
+   c. Wait and verify until `kubectl get svc -n runai | grep LoadBalancer` shows port 81. should be something like this: `81:30322/TCP,443:32301/TCP` 
+
+   d. Add to values file: `port: 81`
+
+8. Run the helm install script to deploy the application: `helm-upgrade.sh`
+9. Verify all pods are allocated and running.
+10. Download packages folder
+12. Replace gs-install-packages.sh file: cp packages-override/gs-install-packages.sh packages
+13. Run `install-packages.sh`
+14. Add the DNS records to your DNS. Run `kubectl get service` - the external of GenSynth Application should be added to the DNS.
 
     <br/>
     <br/>

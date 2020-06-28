@@ -5,7 +5,7 @@ metadata:
 data:
   app-config.json: |+
     {
-      "apiHostname": "http://{{ required "hostname is required" .Values.hostname }}-api{{ .Values.jobIndex }}",
+      "apiHostname": "http://{{ required "hostname is required" .Values.hostname }}-api{{ .Values.jobIndex }}{{- if .Values.port }}:{{ .Values.port }}{{- end }}
       "useAuthentication": true,
       "authProvisionerConfig": {
         "customAuth": true,
