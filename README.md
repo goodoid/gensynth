@@ -10,15 +10,33 @@ _**Installation Instructions:**_
 4. Create a directory for the storage on the node, the directory should have an internal directory called "workspace-storage" with all permissions - this directory will be used by the API image. `mkdir –m777 {path}/workspace-storage`
 5. Access to Docker images for the deployments:
     
-    _Option 1:_ Give the deployments access to Darwin docker repository:_ 
+    - Option 1: Use Gensynth docker repository:
+
+       - a. run script `create-gensynth-docker-repository-credentials.sh <username> <password>` with credentials that have access to Gensynth docker repository.
     
-    a. Create a Secret based on existing Docker credentials -  https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+       - b. update values.yaml with the following values:
+
+          - `imagePullSecrets: gensynth-docker-repository-credentials`
+         
+          - `gensynthApiImage: darwinai/gensynth:api_1.10.0-gpu`
+ 
+          - `gensynthDbImage: darwinai/gensynth-db:1.10.0-pg`
+
+          - `gensynthWebImage: darwinai/gensynth-web:1.10.0`
+       
+    - Option 2: Use Runai docker repository:
     
-    b. Set the `imagePullSecrets` and `image` of all 3 deployments.
-    
-    _Option 2: Use runai private repository:_ 
-    
-    a. Run the script: `create-runai-secret.sh`.
+       - a. run script `create-runai-secret.sh`.
+       
+       - b. update values.yaml with the following values:
+
+          - `imagePullSecrets: gcr-secret`
+
+          - `gensynthApiImage: gcr.io/run-ai-prod/gensynth:api_1.8.0-gpu`
+
+          - `gensynthDbImage: gcr.io/run-ai-prod/gensynth-db:1.8.0-pg`
+
+          - `gensynthWebImage: gcr.io/run-ai-prod/gensynth-web:1.8.0`
     
 6. Set the values file in the helm-charts with the relevant configuration.
 7. If want to configure other load balancer port than the default 80, need to do the following (for example port 81):

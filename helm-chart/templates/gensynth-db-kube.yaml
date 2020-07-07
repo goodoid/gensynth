@@ -51,7 +51,7 @@ spec:
     spec:
       containers:
       - name: gensynth-db
-        image: gcr.io/run-ai-prod/gensynth-db:1.8.0-pg
+        image: {{ required "gensynthDbImage is required" .Values.gensynthDbImage }}
         resources:
           requests:
             memory: 1Gi
@@ -67,7 +67,7 @@ spec:
               name: postgres-config
       schedulerName: runai-scheduler
       imagePullSecrets:
-      - name: gcr-secret
+        - name: {{ required "imagePullSecrets is required" .Values.imagePullSecrets }}
       volumes:
         - name: data
           persistentVolumeClaim:

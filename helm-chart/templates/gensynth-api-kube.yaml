@@ -105,7 +105,7 @@ spec:
       hostname: gensynth
       containers:
       - name: gensynth-api
-        image: gcr.io/run-ai-prod/gensynth:api_1.8.0-gpu
+        image:  {{ required "gensynthApiImage is required" .Values.gensynthApiImage }}
         resources:
           requests:
             memory: {{ .Values.apiMemoryRequest }}
@@ -142,7 +142,7 @@ spec:
           subPath: bconf
           name: data
       imagePullSecrets:
-      - name: gcr-secret
+        - name: {{ required "imagePullSecrets is required" .Values.imagePullSecrets }}
       schedulerName: runai-scheduler
       volumes:
         - name: api-config

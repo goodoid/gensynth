@@ -3,4 +3,8 @@ apiMemoryRequest: 8Gi
 workspacePath: /tmp/gensynth/workspaces-storage
 hostname: gensynthin
 nodeName: master-node
+imagePullSecrets: gensynth-docker-repository-credentials # gcr-secret
+gensynthApiImage: darwinai/gensynth:api_1.10.0-gpu # gcr.io/run-ai-prod/gensynth:api_1.8.0-gpu
+gensynthDbImage: darwinai/gensynth-db:1.10.0-pg # gcr.io/run-ai-prod/gensynth-db:1.8.0-pg
+gensynthWebImage: darwinai/gensynth-web:1.10.0 # gcr.io/run-ai-prod/gensynth-web:1.8.0
 license: FCA232-AA3DE3-4BE0AE-858496-0CFDBA-C2B8ED

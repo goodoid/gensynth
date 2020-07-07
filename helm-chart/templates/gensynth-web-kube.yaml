@@ -37,7 +37,7 @@ spec:
         "beta.kubernetes.io/os": linux
       containers:
       - name: gensynth-web
-        image: gcr.io/run-ai-prod/gensynth-web:1.8.0
+        image: {{ required "gensynthWebImage is required" .Values.gensynthWebImage }}
         resources:
           requests:
             memory: 512Mi
@@ -50,7 +50,7 @@ spec:
           subPath: app-config.json
       schedulerName: runai-scheduler
       imagePullSecrets:
-      - name: gcr-secret
+        - name: {{ required "imagePullSecrets is required" .Values.imagePullSecrets }}
       volumes:
         - name: web-config
           configMap:
