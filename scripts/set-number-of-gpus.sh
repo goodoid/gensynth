@@ -9,8 +9,8 @@ gpus=$1
 
 if [[ -n "$gpus" ]]; then
     set -x
-    # Change the path here 1    
-    helm upgrade -i gensynth helm-chart --set jobIndex=${GENSYNTH_JOB_INDEX},numberOfGpus=$gpus -f scripts/values.yaml
+    kubectl get cm api-config -o yaml | sed -e 's|"gensynth": .|"gensynth": '"$gpus"'|' | kubectl apply -f -
+    kubectl set resources deployment gensynth-api --limits=nvidia.com/gpu=$gpus
     kubectl delete replicaset -l app=gensynth-api
 
     set +x
